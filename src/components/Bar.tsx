@@ -1,11 +1,13 @@
 import React from "react";
-import logo from "./logo.svg";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Input from "@mui/joy/Input";
 
-function Bar({ addNote }: { addNote: Function }) {
+function Bar({ addNote, search }: { addNote: Function, search: Function }) {
+  const x = (event: EventTarget) => {
+    console.log(event.target.value);
+  }
   return (
     <div>
       <Grid container sx={{ mt: 2, mr: 1 }}>
@@ -22,7 +24,7 @@ function Bar({ addNote }: { addNote: Function }) {
           </Button>
         </Grid>
         <Grid item xs={2} sx={{ mr: 1 }}>
-          <Input disabled={false} placeholder="חפש" />
+          <Input onKeyDown={() => x} disabled={false} placeholder="חפש" />
         </Grid>
       </Grid>
     </div>
