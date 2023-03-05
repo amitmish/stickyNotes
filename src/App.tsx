@@ -11,11 +11,17 @@ function App() {
 
     return storedNoted ? JSON.parse(storedNoted) : [];
   });
-  const [notesCounter, setNoteCounter] = useState(notes.length);
+  const [notesCounter, setNoteCounter] = useState(() =>{
+    const storedNoted = localStorage.getItem("notesCounter");
+
+    return storedNoted ? JSON.parse(storedNoted) : 0;
+  });
+
   const [filteredNotes, setFilteredNotes] = useState<NoteType[]>(notes);
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
+    localStorage.setItem("notesCounter", JSON.stringify(notesCounter));
   }, [notes]);
 
   const addNote = () => {
@@ -38,7 +44,7 @@ function App() {
   const changeNoteColor = (note: NoteType, color: string) => {
     console.log("note:");
     console.log(note);
-    
+
     setNotes(
       notes.map((noteToChange) => {
         return {
