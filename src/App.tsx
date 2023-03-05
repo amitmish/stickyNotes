@@ -11,13 +11,13 @@ function App() {
 
     return storedNoted ? JSON.parse(storedNoted) : [];
   });
-  const [notesCounter, setNoteCounter] = useState(() =>{
+  const [notesCounter, setNoteCounter] = useState(() => {
     const storedNoted = localStorage.getItem("notesCounter");
 
     return storedNoted ? JSON.parse(storedNoted) : 0;
   });
 
-  const [filteredNotes, setFilteredNotes] = useState<NoteType[]>(notes);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
@@ -28,7 +28,7 @@ function App() {
     setNoteCounter(notesCounter + 1);
     setNotes([
       ...notes,
-      { id: notesCounter, text: "", header: "כותרת", color: "#ffc107" },
+      { id: notesCounter, text: "", header: `כותרת ${notesCounter}`, color: "#ffc107" },
     ]);
   };
 
@@ -42,9 +42,6 @@ function App() {
   };
 
   const changeNoteColor = (note: NoteType, color: string) => {
-    console.log("note:");
-    console.log(note);
-
     setNotes(
       notes.map((noteToChange) => {
         return {
@@ -55,31 +52,34 @@ function App() {
     );
   };
 
-  const search = (input: string) => {
-    setFilteredNotes(
-      notes.filter(
-        (note) => note.header.includes(input) || note.text.includes(input)
-      )
-    );
-  };
-
   const notesTags = (
     <Grid container>
-      {notes.map((note) => (
-        <Grid item xs={3} key={note.id}>
-          <Note
-            deleteNote={deleteNote}
-            note={note}
-            changeNoteColor={changeNoteColor}
-          />
-        </Grid>
-      ))}
+      {notes
+        .filter(
+          (note) => note.header.includes(search) || note.text.includes(search)
+        )
+        .map((note) => (
+          <Grid item xs={3} key={note.id}>
+            <Note
+              deleteNote={deleteNote}
+              note={note}
+              changeNoteColor={changeNoteColor}
+            />
+          </Grid>
+        ))}
     </Grid>
   );
 
   return (
     <div id="app" className="App" dir="rtl">
-      <Bar search={search} addNote={addNote} />
+      <Bar
+        search={(input: string) => {
+          console.log(input);
+          
+          setSearch(input);
+        }}
+        addNote={addNote}
+      />
       {notesTags}
     </div>
   );

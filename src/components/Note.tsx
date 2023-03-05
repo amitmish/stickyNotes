@@ -45,7 +45,7 @@ function Note({
               </IconButton>
             </div>
           }
-          title={note.header + " " + note.id}
+          title={note.header}
           sx={{
             bgcolor: note.color,
           }}

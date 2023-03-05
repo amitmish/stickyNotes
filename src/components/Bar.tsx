@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 
 function Bar({ addNote, search }: { addNote: Function, search: Function }) {
   const x = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    console.log(event.target.value);
+    search(event.target.value);
   }
   return (
     <div>
