@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Grid from "@mui/material/Grid";
 import Bar from "./components/Bar";
@@ -6,9 +6,18 @@ import Note from "./components/Note";
 import NoteType from "./interfaces/NoteType";
 
 function App() {
-  const [notes, setNotes] = useState<NoteType[]>([]);
-  const [notesCounter, setNoteCounter] = useState(0);
+  const [notes, setNotes] = useState<NoteType[]>(() => {
+    const storedNoted = localStorage.getItem("notes");
+
+    return storedNoted ? JSON.parse(storedNoted) : [];
+  });
+  const [notesCounter, setNoteCounter] = useState(notes.length);
   const [filteredNotes, setFilteredNotes] = useState<NoteType[]>(notes);
+
+  useEffect(() => {
+    localStorage.setItem("notes", JSON.stringify(notes));
+  }, [notes]);
+
   const addNote = () => {
     setNoteCounter(notesCounter + 1);
     setNotes([
@@ -27,6 +36,9 @@ function App() {
   };
 
   const changeNoteColor = (note: NoteType, color: string) => {
+    console.log("note:");
+    console.log(note);
+    
     setNotes(
       notes.map((noteToChange) => {
         return {
