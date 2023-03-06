@@ -11,6 +11,7 @@ function App() {
 
     return storedNoted ? JSON.parse(storedNoted) : [];
   });
+
   const [notesCounter, setNoteCounter] = useState(() => {
     const storedNoted = localStorage.getItem("notesCounter");
 
@@ -28,7 +29,12 @@ function App() {
     setNoteCounter(notesCounter + 1);
     setNotes([
       ...notes,
-      { id: notesCounter, text: "", header: `כותרת ${notesCounter}`, color: "#ffc107" },
+      {
+        id: notesCounter,
+        text: "",
+        header: `כותרת ${notesCounter}`,
+        color: "#ffc107",
+      },
     ]);
   };
 
@@ -39,6 +45,17 @@ function App() {
       1
     );
     setNotes(newNotes);
+  };
+
+  const changeNoteText = (note: NoteType, text: string) => {
+    setNotes(
+      notes.map((noteToChange) => {
+        return {
+          ...noteToChange,
+          text: noteToChange.id === note.id ? text : noteToChange.text,
+        };
+      })
+    );
   };
 
   const changeNoteColor = (note: NoteType, color: string) => {
@@ -64,6 +81,7 @@ function App() {
               deleteNote={deleteNote}
               note={note}
               changeNoteColor={changeNoteColor}
+              changeNoteText={changeNoteText}
             />
           </Grid>
         ))}
@@ -75,7 +93,7 @@ function App() {
       <Bar
         search={(input: string) => {
           console.log(input);
-          
+
           setSearch(input);
         }}
         addNote={addNote}

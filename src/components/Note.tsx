@@ -10,15 +10,22 @@ function Note({
   note,
   deleteNote,
   changeNoteColor,
+  changeNoteText,
 }: {
   note: NoteType;
   deleteNote: Function;
   changeNoteColor: Function;
+  changeNoteText: Function;
 }) {
   const [editable, setEditable] = useState(false);
   const handleChangeNoteColor = (color: string) => {
     changeNoteColor(note, color);
   };
+
+  const handleChangeNoteText = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    changeNoteText(note, event.target.value);
+  };
+
   return (
     <div>
       <Card sx={{ m: 2, border: 1 }}>
@@ -58,6 +65,7 @@ function Note({
               variant="plain"
               defaultValue={note.text}
               placeholder="הכנס טקסט"
+              onChange={(e) => handleChangeNoteText(e)}
               sx={{ borderRadius: 0, border: editable ? 2 : 0 }}
             />
           </Grid>
